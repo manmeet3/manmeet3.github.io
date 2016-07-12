@@ -1,0 +1,20 @@
+<footer>
+<hr/>
+  <div class="left">  
+    &copy;{{ site.time | date:"%Y" }}.
+    Built with <a href="http://jekyllrb.com/">Jekyll</a> 
+    updated: 7/11/16
+  </div>
+
+  <div class="right">
+    {% unless site.twitter == "" %}
+      <a id="so-ic" href="{{site.linkedin}}"><i class="fa fa fa-linkedin-square fa-lg" style="color:#49B1F7;"></i></a>
+      <a href="{{site.git}}"><i class="fa fa-git fa-lg" style="color:#49B1F7;"></i></a>
+      <a href="{{site.twitter}}"><i class="fa fa-twitter fa-lg" style="color:#49B1F7;"></i></a>
+      <a href="{{site.stackoverflow}}"><i class="fa fa-stack-overflow"></i></a>
+      <a href="{{site.steam}}"><i class="fa fa-steam"></i></a>
+
+    </a>
+    {% endunless %}
+  </div>
+</footer>
