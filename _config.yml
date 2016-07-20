@@ -4,6 +4,7 @@ title: "Manmeet Singh"
 email: "manmeet3 (at) gmail.com"
 paginate: 10 #articles per page
 paginate_path: /posts/page:num #makes pagination working
+assets: "/assets/"
 
 #contacts
 git: "https://github.com/manmeet3"  #your github url here.
