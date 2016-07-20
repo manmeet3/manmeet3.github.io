@@ -8,5 +8,5 @@ The following is a review I wrote for my senior exit technical writing requireme
 
 As the title suggests, it is related to learning, more specifically, what kind of information is learnable and what is not. 
 
-You can [view the PDF]({{ site.assets }}/assets/msingh.pdf) directly.
+You can [view the PDF]({{ site.assets }}/msingh.pdf) directly.
 
