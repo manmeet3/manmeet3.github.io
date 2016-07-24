@@ -4,7 +4,11 @@ layout: welcome
 ---
 
 <div class="page-archive">
-<h4><a href="{{ "/tags" | prepend:site.baseurl }}">Tags</a></h4>
+
+<p style="text-align:left;">
+<h2> Posts </h2>
+<span style="float:right;"><a href="{{ "/tags" | prepend:site.baseurl }}">Tags</a></span>
+</p>
 {% for post in site.posts %}
   {% assign post_month_year = post.date | date: "%B %Y" %}
   {% assign newer_post_month_year = post.next.date | date: "%B %Y" %}
@@ -18,4 +22,5 @@ layout: welcome
     <small class="text-muted">{{ post.date | date_to_string }}</small>
 	</article>
 {% endfor %}
+
 </div>
