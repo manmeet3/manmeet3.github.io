@@ -7,7 +7,7 @@ layout: welcome
 
 <p style="text-align:left;">
 <h2 style= "text-align: center;"> Posts </h2>
-<span style="float:right;"><a href="{{ "/tags" | prepend:site.baseurl }}">Tags</a></span>
+
 </p>
 {% for post in site.posts %}
   {% assign post_month_year = post.date | date: "%B %Y" %}
@@ -22,5 +22,5 @@ layout: welcome
     <small class="text-muted">{{ post.date | date_to_string }}</small>
 	</article>
 {% endfor %}
-
+<span style="float:right;"><a href="{{ "/tags" | prepend:site.baseurl }}">Tags</a></span>
 </div>
