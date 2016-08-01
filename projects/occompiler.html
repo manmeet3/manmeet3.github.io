@@ -1,0 +1,209 @@
+---
+title: OC compiler
+permalink: "projects/oc.html"
+layout: default
+---
+
+<p>
+The OC compiler was written as a quarter long project for CMPS104A - Fundamentals of Compiler Design during Fall of 2015. 
+</p>
+
+<p> All source code at <a href="https://github.com/manmeet3/OC-compiler">here</a>
+</p>
+
+<div style="background-color: black;
+    width: auto;
+    border: 5px solid black;
+    padding: 15px;
+    margin: 10px;">
+SYNOPSIS: <br/>
+<b>oc [-ly] [-@ flag ...] [-D string] program.oc</b><br/>
+<br/>
+OPTIONS:<br/>
+	-@ flags Call set_debugflags, and use DEBUGF and DEBUGSTMT for debugging.<br/>
+	-D string Pass this option and its argument to cpp.<br/>
+	-D__OCLIB_OH__ to suppress inclusion of the code from <br/>oclib.oh when testing a program.
+	-l Debug yylex() with yy_flex_debug = 1<br/>
+	-y Debug yyparse() with yydebug = 1<br/><br/>
+<ul>
+OUTPUT ----------------- FILENAME<br/>
+String set ---------------- prog_name.str<br/>
+Scanned tokens ------- prog_name.tok<br/>
+Abstract syntax tree - prog_name.ast<br/>
+Symbol table ----------- prog_name.sym<br/>
+Interm. language ----- prog_name.oil<br/>
+</ul>
+</div>
+
+<br/>
+<div align="center">
+The process was broken down into 5 stages: <br/>
+I. Preprocessor and token generation<br/>
+II. Lexical Analyzer (using flex)<br/>
+III. LALR(1) Parser (using bison)<br/>
+IV. Symbols and Type Checking<br/>
+V. Intermediate Language Emission<br/>
+<br/>
+</div>
+<h3>I. </h3>
+<p>The first part of the compiler consisted of writing a main program for the language oc. Included in it was a string set ADT which was used to create string sets based on the output from the C preprocessor. These sets are written to a file with .str suffix and the specified filename suffix. </p>
+
+<p>The main program called a test harness for the string set ADT which works as follows: after filtering the input through the C preprocessor, a line is read using fgets(3) and tokenized using strtok_r(3) with the string "*\t\n".
+After that, the main program calls the string set ADT opertion to dump the string set into its trace file. The purpose of the string set is to keep track of strings in a unique manner. If, for example, "abc" is entered multiple times, it appears only once in the table. And so, instead of using strcmp(3), one can just compare pointers. </p>
+
+
+<h3> II.  </h3>
+<p>The second part consisted of augmenting the string table from part I to a scanner writtein in flex. The string sets from the part I are identified as tokens, based on the regex identified in the flex "scanner.l" file. </p>
+
+<p>The tokens in the oc language include:<br/>
+Special symbols :
+<p style="word-spacing: 35px; background-color: black;">[] ( ) [ ] { } ; , . = == != < <= > >= + - * / % !</p>
+
+
+
+Reserved words :
+<p style="word-spacing: 35px;background-color: black;">void bool char int string struct if else while return
+false true null ord chr new</p>
+
+Identifiers: Any sequence of upper or lower-case ASCII letters, digits, and underscores, but may not begin with a digit.<br/>
+
+Integer constants: consist of any sequence of decimal digits. (No octa, hex or floating point support.)<br/><br/>
+
+Char constants consist of a pair of single quote marks with a single character or escape between them. <br/><br/>
+
+String constants consist of a pair of double quote marks with zero or more characters or escapes between them<br/><br/>
+
+Output directives from C preprocessor must be scanned and use to error print locations in the source code.
+</p>
+
+These tokens are written into a .tok file. <br/>
+
+<div style="background-color: black;
+    width: auto;
+    border: 5px solid black;
+    padding: 15px;
+    margin: 10px;">
+<code style="background-color: black"> 
+#cat foo.tok<br/>
+
+2  16.003  264  TOK_KW_RETURN  (return)<br/>
+2  16.010   61  '='			   (=)<br/>
+2  20.008  258  TOK_IDENT      (hello)<br/>
+2  20.010  271  TOK_LIT_INT    (1234)<br/>
+2  25.002  123  '{'			   ({})<br/>
+2  26.008  272  TOK_LIT_STRING ("beep")<br/>
+
+</code>
+</div>
+
+<h3> III. </h3>
+Part three consisted of writing an LALR parser using bison. <br/>
+
+<img src="{{ site.assets }}/table2.png" alt="HTML5 Icon" style="width:800px;height:450px; padding: 15px;">  
+<br/>
+
+These are the gramatical rules that the parser follows. In the implementation, they are translated to bison acceptable form. The bison acceptabble form includes  explicitly enumerating all possible rules with operators in them. Bison operator precedence declarations reduce the number of necessary rules.  
+<img src="{{ site.assets }}/table3.png" alt="HTML5 Icon" style= "padding: 20px;" >  
+<p>
+This table shows operator precedence and associativity. It contains a superset of information used in the %left and %right declarations in the bison file. </p>
+<p>
+Construction of the abstract syntax tree is in a way such that all operators and operator-like tokens are the parents of their operands, which are adopted as their
+children. The children may be leaf nodes (identifiers or constants) or other expressions. Constants and identifiers are always leaf nodes. In general, interior nodesnmay have an arbitrarily large number of children.</p>
+<p>
+More generally, bison reads tokens created by the scanner and pushes them onto a stack along with their semantic values. The stack is called the parser stack. Pushing a token is traditionally called shifting. And this shifting takes place based on the grammer rules. Lastly, shift reduce conflicts are some of the most common errors while parsing that can result in the parser getting stuck in a loop. 
+</p>
+
+<div style="background-color: black;
+    width: auto;
+    border: 5px solid black;
+    padding: 15px;
+    margin: 10px;">
+<code style="background-color: black"> 
+
+<p> The following is a partial output of a .ast file that the abstract syntax tree is written to.</p>
+#cat foo.ast<br/>
+
+ROOT "" 0.0.0<br/>
+| FUNCTION "" 0.1.0<br/>
+| | INT "int" 0.1.0<br/>
+| | | DECLID "fac" 0.1.4<br/>
+| | PARAM "(" 0.1.8<br/>
+| | | INT "int" 0.1.9<br/>
+| | | | DECLID "n" 0.1.13<br/>
+| | BLOCK "{" 0.1.15<br/>
+| | | VARDECL "=" 0.2.9<br/>
+| | | | INT "int" 0.2.3<br/>
+| | | | | DECLID "f" 0.2.7<br/>
+.<br/>
+.<br/>
+.<br/>
+
+</code>
+</div>
+
+<h3> IV. </h3>
+The fourth part consisted of creating a symbol table and type checking. The symbol table maintains all of the identifiers in an oc program so they can be looked up when referenced. Additionally, it also maintains scope and range information that determines from where a symbol may be referenced.
+
+Symbols in <i> oc </i> are of three types:
+<ol>
+<li> <i>Type Names</i>: Consist of reserved words [void, bool, char, int, string] and identifier names defined via struct definitions. These all have a global score and are entered into type name table. 
+<li> <i>Field Names</i>: These are identifiers that may be used immediately following the dot (.) operator for field selection. The same name may be used in different tructs without conflict.
+<li> <i>Function and Variable Names</i>: These identifiers are entered into the identifier symbol tables. All functions have global scope, whereas variables may have global or local scope, nested arbitrarily deep. Local scopes override global scopes and disjoint scopes may contain variables with the same names. 
+</ol>
+
+There are also, three categories of types in <i> oc</i> and each has groups of types within it. Briefly, they are
+<ol>
+<li> <i> void </i> is neither primitive nor reference.
+<li> Primitive types are represented by inline inside structs and local or global variables.
+<li> Reference types are pointers to objects on the heap. They can be local, global, or fields. All object types reside on the heap. Pointer arithmitic is prohibited. 
+
+</ol>
+
+Type Checking involves a post-order depth-first traversal of the AST created in part III. The following names are used: <br/>
+<i> primitive </i> is any primitive type <br/>
+<i> base </i> is any type that can be used as a base type for an array<br/>
+<i> any </i> is either primitive or reference <br/> <br/>
+<p>
+The rules for type checking are listed as follows:<br/>
+a) Two types are compatible if they are the same type or if one type is any and the other is null.<br/>
+b) When the right side of a production is empty, there are no type attributes. Only expressions have type attributes, not statements.<br/>
+c) Assignment (=) results in inheriting the type of its left operand.<br/>
+d) Fields following a selector have the field attribute but no type attribute.<br/>
+e) Identifiers have the type attributes that they derive from the symbol table.<br/>
+f) Field selection sets the selector (.) attribute as follows : The left operand must.
+be a struct type or an error message is generated.<br/>
+g) For a CALL, evaluate the types of each of the arguments, and look up the func-
+tion in the identifier table. Then verify that the arguments are compatible with the parameters and error if not. <br/>
+h) The expression operand of both if and while must be of type bool.
+i) The indexing operator for an array returns the address of one of its elements,
+and for a string, the address of one of its characters.
+</p>
+
+
+
+<div style="background-color: black;
+    width: auto;
+    border: 5px solid black;
+    padding: 15px;
+    margin: 10px;">
+<code style="background-color: black"> 
+
+<p> The following is a partial output of a .sym file that the symbol table is written to.</p>
+#cat foo.sym<br/>
+
+node (0.1.7) {0} struct "node"<br/>
+  &emsp;foo (0.1.18) field {node} int<br/>
+  &emsp;link (0.1.27) field {node} struct "node"<br/>
+
+func (0.2.5) {0} struct "node" function<br/>
+ &emsp; head (0.2.15) {1} struct "node" variable lval param<br/>
+  &emsp;length (0.2.24) {1} int variable lval param<br/>
+  &emsp; a (0.3.7) {1} int variable lval<br/>
+  &emsp; b (0.3.14) {1} string variable lval<br/>
+  &emsp; c (0.3.24) {1} struct "node" variable lval<br/>
+.<br/>
+.<br/>
+.<br/>
+
+</code>
+</div>
