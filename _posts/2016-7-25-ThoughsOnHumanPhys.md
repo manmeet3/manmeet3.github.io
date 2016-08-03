@@ -2,10 +2,8 @@
 title: "Thoughts on Human Physiology"
 tags: [human, body, bloodcirculation, nervoussystem]
 ---
-
-This is going to be kind of a run-on post containing much of what I have been thinking about this summer while attempting to re-engineer myself to become a better version of how I currently stand. 
-
-<img src="{{ site.assets }}/humanbody.gif" alt="HTML5 Icon" style="width:100px;height:140px;  margin: auto; display: block;">  
+<img src="{{ site.assets }}/humanbody.gif" alt="HTML5 Icon" style="width:80px;height:120px;  margin: auto; display: block; float: left"> 
+This is going to be kind of a run-on post containing much of what I have been thinking about this summer while attempting to re-engineer myself to become a better version of how I currently stand.  
 
 For much of my life, I have had trouble with holding inner tension and not breathing properly. Although, luckily, this did not work to impair my physical or mental development (to my knowledge at least), I have noticed a kind of difference between myself and other people where I have ignored certain obvious pieces of information that any other sane person would have noticed. More specifically, these pieces of information have been related to expressed emotion or certain holistic features. Holistic features can be categorized as one's ability to judge a situation in the context of something else. This ability is represented, for example, in being able to judge what part of the city you are in and how to get to your destination without navigation. Then, the analytical part of your brain kicks in which breaks down the turns you need to get from point A to point B. 
 

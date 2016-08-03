@@ -3,4 +3,82 @@ title: OS projects
 permalink: "projects/operatingsystems.html"
 layout: default
 ---
+<h2> Operating Systems (CS111@UCSC) Projects Documentation</h2>
+<h3> Shell </h3>
+<p> Source code <a href="https://github.com/manmeet3/Shell">here</a> <br/>
+ &emsp;The primary goal of this project was to become familiar with the system call interface and processes. A secondary goal was to use some of the programming tools provided in FreeBSD. A simple FreeBSD shell program was implemented that conveniently allows one to run other programs.
+</p>
 
+The follwing are supported in this shell: 
+<ol>
+<li>
+The internal shell command exit<br/>
+Details: The exit command terminates the shell<br/>
+Concepts: shell commands, exiting the shell<br/>
+Library calls: exit()</li>
+<li>A command with no arguments.<br/>
+Example: ls<br/>
+Details: This runs the command, which can be any executable in your default search path (the one that execvp() searches). Shell blocks until the command completes and, if the return code is abnormal (non-zero), a message is printed out. <br/>
+Concepts: Forking a child process, waiting for it to complete, synchronous execution.
+System calls: fork(), execvp(), wait()</li>
+<li>A command with one or more arguments.<br/>
+Example: ls -l foo<br/>
+Details: Argument 0 is the name of the command; other arguments follow in sequence. A special character ends the command, which means that I/O redirection comes after all the arguments to a command.<br/>
+Concepts: Command-line parameters<br/>
+System calls: fork(), execvp(), wait()</li>
+<li>A command, with or without arguments whose input is redirected from a file.<br/>
+Example: sort -nr < scores<br/>
+Details: This takes the named file as input to the command.<br/>
+Concepts: Input redirection, file operations.<br/>
+System calls: open(), close(), dup()</li>
+<li>A command, with or without arguments, whose output is redirected to a file.
+Example: ls -l > file<br/>
+ ls -l >> file<br/>
+Details: This takes the output of the command and appends it to the named file. If the > form is used, the command fails if the file already exists. If the >> form is used, the command output is appended to the end of the output file, creating it if necessary. If the output file doesn't already exist, > and >> do the same thing.<br/>
+Concepts: File operations, output redirection.</li>
+<li>System calls: open(), close(), dup()<br/>
+A command, with or without arguments, whose output is piped to the input of another command.<br/>
+Example: ls -l | less<br/>
+Details: This takes the output of the first command and makes it the input to the second command.<br/>
+Concepts: Pipes, synchronous operation </li>
+<li>System calls: pipe(), close(), dup()<br/>
+Redirection of standard error.<br/>
+Example: ls -l >& foo<br/>
+&emsp;&emsp;&emsp;&emsp; ls -l >>& foo<br/>
+ &emsp;&emsp;&emsp;&emsp;ls -l |& wc<br/>
+Details: If any output redirection operator includes an & character at the end, standard error (file descriptor 2) is redirected in addition to standard output, and both go to the same file / pipe.<br/>
+Concepts: File operations, pipes, output redirection</li>
+<li>System calls: pipe(), open(), close(), dup()
+Two or more command sequences, possibly involving I/O redirection, separated by a semicolon.<br/>
+Example: cd /home/manmeet ; sort -nr < names ; ls -l > foo<br/>
+Details: The shell runs the first command, and waits for it to finish. When it finishes, the next command is run, regardless of any error encountered by the previous sequence. I/O redirections apply only to their specific command, not to all previous commands (or future commands).<br/>
+Concepts: Multiple commands on a single line.<br/>
+System calls: wait()</li>
+<li>The internal shell command cd<br/>
+Example: cd /usr<br/>
+ &emsp;&emsp;&emsp;&emsp;cd<br/>
+Details: This shell command sets the working directory to the directory provided in the command. If no directory is provided, the working directory is set to whatever the working directory was when the shell was started<br/>
+Concepts: Working directory<br/>
+System / library calls: chdir(), getcwd()
+</li><br/> - - - - -  <br/>
+<h3> FAT File System </h3>
+
+<p> This was a file system to be accessed via FUSE. The entire disk is contained in a file in the underlying file system, and all of the operations written as routes to be called by the FUSE library.</p>
+
+<h4> Disk Structure </h4>
+The disk is divided into 1KB blocks, each of which is read or written in its entirety. YThis is done using lseek() to seek to the appropriate offset (1024 * block_number), followed by a read() or write() of 1024 bytes. The blocks are laid out as follows:<br/> 
+
+<img src="{{ site.assets }}/diskstruct.png" alt="HTML5 Icon" style= "padding: 20px;" >  
+
+The SuperBlock consists of the following:
+<img src="{{ site.assets }}/superblk.png" alt="HTML5 Icon" style= "padding: 20px;" >  
+
+These are all stored in 32-bit words. None of these values change over time. The root directory starts in block k+1.
+
+<p>The file allocation table (FAT) is an array of (signed) 4-byte block numbers. A 0 in the FAT means that a block is free, and a -2 means that the block is the last one in the file. Otherwise, the entry in the file allocation is the block number of the next block in the file. As noted above, the first k+1 entries of the FAT are invalid, and are set to -1 so they're never allocated. </p>
+<h4> Directories</h4>
+Directory entries in this file system are 64 bytes long, and contain the following information:
+
+<img src="{{ site.assets }}/dirstruct.png" alt="HTML5 Icon" style= "padding: 20px;" >  
+
+Supported operations include:  file creation, directory traversal, file reads, writes and seeks, etc. 
