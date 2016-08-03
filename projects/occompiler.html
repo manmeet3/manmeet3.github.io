@@ -45,14 +45,14 @@ IV. Symbols and Type Checking<br/>
 V. Intermediate Language Emission<br/>
 <br/>
 </div>
-<h3>I. </h3>
+<h3>I. Preprocessor and string set generation</h3>
 <p>The first part of the compiler consisted of writing a main program for the language oc. Included in it was a string set ADT which was used to create string sets based on the output from the C preprocessor. These sets are written to a file with .str suffix and the specified filename suffix. </p>
 
 <p>The main program called a test harness for the string set ADT which works as follows: after filtering the input through the C preprocessor, a line is read using fgets(3) and tokenized using strtok_r(3) with the string "*\t\n".
 After that, the main program calls the string set ADT opertion to dump the string set into its trace file. The purpose of the string set is to keep track of strings in a unique manner. If, for example, "abc" is entered multiple times, it appears only once in the table. And so, instead of using strcmp(3), one can just compare pointers. </p>
 
 
-<h3> II.  </h3>
+<h3> II. Lexical Analyzer </h3>
 <p>The second part consisted of augmenting the string table from part I to a scanner writtein in flex. The string sets from the part I are identified as tokens, based on the regex identified in the flex "scanner.l" file. </p>
 
 <p>The tokens in the oc language include:<br/>
@@ -83,7 +83,7 @@ These tokens are written into a .tok file. <br/>
     border: 5px solid black;
     padding: 15px;
     margin: 10px;">
-<code style="background-color: black"> 
+<code style="background-color: black; color: white;"> 
 #cat foo.tok<br/>
 
 2  16.003  264  TOK_KW_RETURN  (return)<br/>
@@ -96,7 +96,7 @@ These tokens are written into a .tok file. <br/>
 </code>
 </div>
 
-<h3> III. </h3>
+<h3> III. LALR Parser</h3>
 Part three consisted of writing an LALR parser using bison. <br/>
 
 <img src="{{ site.assets }}/table2.png" alt="HTML5 Icon" style="width:800px;height:450px; padding: 15px;">  
@@ -118,7 +118,7 @@ More generally, bison reads tokens created by the scanner and pushes them onto a
     border: 5px solid black;
     padding: 15px;
     margin: 10px;">
-<code style="background-color: black"> 
+<code style="background-color: black; color: white;"> 
 
 <p> The following is a partial output of a .ast file that the abstract syntax tree is written to.</p>
 #cat foo.ast<br/>
@@ -141,7 +141,7 @@ ROOT "" 0.0.0<br/>
 </code>
 </div>
 
-<h3> IV. </h3>
+<h3> IV. Symbols and Type Checking</h3>
 The fourth part consisted of creating a symbol table and type checking. The symbol table maintains all of the identifiers in an oc program so they can be looked up when referenced. Additionally, it also maintains scope and range information that determines from where a symbol may be referenced.
 
 Symbols in <i> oc </i> are of three types:
@@ -186,7 +186,7 @@ and for a string, the address of one of its characters.
     border: 5px solid black;
     padding: 15px;
     margin: 10px;">
-<code style="background-color: black"> 
+<code style="background-color: black; color: white;"> 
 
 <p> The following is a partial output of a .sym file that the symbol table is written to.</p>
 #cat foo.sym<br/>
@@ -207,3 +207,20 @@ func (0.2.5) {0} struct "node" function<br/>
 
 </code>
 </div>
+
+
+<h3> V. Intermediate Code Generation</h3>
+<p>An intermediate language is a very low level language used by a compiler to per-
+form optimizations and other changes before emitting final assembly language for
+some particular machine. It generally matches common assembly language state-
+ment semantics, but in a typeful manner. </p>
+
+<p>The intermediate langugae here looks very much like C, except that each oil statement should be capable of being translated into a single assembly language instruction. The basic grammer used in an oil program is the same metanotation as was used in part III.
+</p>
+
+
+
+<ol>
+<li> Structure definitions come first with the struct keyword and closing brace left-aligned, and the fields idented.</li>
+
+</ol>
