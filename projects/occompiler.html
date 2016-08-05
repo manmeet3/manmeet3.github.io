@@ -20,11 +20,11 @@ SYNOPSIS: <br/>
 <b>oc [-ly] [-@ flag ...] [-D string] program.oc</b><br/>
 <br/>
 OPTIONS:<br/>
-	-@ flags Call set_debugflags, and use DEBUGF and DEBUGSTMT for debugging.<br/>
-	-D string Pass this option and its argument to cpp.<br/>
-	-D__OCLIB_OH__ to suppress inclusion of the code from <br/>oclib.oh when testing a program.
-	-l Debug yylex() with yy_flex_debug = 1<br/>
-	-y Debug yyparse() with yydebug = 1<br/><br/>
+    -@ flags Call set_debugflags, and use DEBUGF and DEBUGSTMT for debugging.<br/>
+    -D string Pass this option and its argument to cpp.<br/>
+    -D__OCLIB_OH__ to suppress inclusion of the code from <br/>oclib.oh when testing a program.
+    -l Debug yylex() with yy_flex_debug = 1<br/>
+    -y Debug yyparse() with yydebug = 1<br/><br/>
 <ul>
 OUTPUT ----------------- FILENAME<br/>
 String set ---------------- prog_name.str<br/>
@@ -49,7 +49,7 @@ V. Intermediate Language Emission<br/>
 <p>The first part of the compiler consisted of writing a main program for the language oc. Included in it was a string set ADT which was used to create string sets based on the output from the C preprocessor. These sets are written to a file with .str suffix and the specified filename suffix. </p>
 
 <p>The main program called a test harness for the string set ADT which works as follows: after filtering the input through the C preprocessor, a line is read using fgets(3) and tokenized using strtok_r(3) with the string "*\t\n".
-After that, the main program calls the string set ADT opertion to dump the string set into its trace file. The purpose of the string set is to keep track of strings in a unique manner. If, for example, "abc" is entered multiple times, it appears only once in the table. And so, instead of using strcmp(3), one can just compare pointers. </p>
+After that, the main program calls the string set ADT operation to dump the string set into its trace file. The purpose of the string set is to keep track of strings in a unique manner. If, for example, "abc" is entered multiple times, it appears only once in the table. And so, instead of using strcmp(3), one can just compare pointers. </p>
 
 
 <h3> II. Lexical Analyzer </h3>
@@ -87,10 +87,10 @@ These tokens are written into a .tok file. <br/>
 #cat foo.tok<br/>
 
 2  16.003  264  TOK_KW_RETURN  (return)<br/>
-2  16.010   61  '='			   (=)<br/>
+2  16.010   61  '='            (=)<br/>
 2  20.008  258  TOK_IDENT      (hello)<br/>
 2  20.010  271  TOK_LIT_INT    (1234)<br/>
-2  25.002  123  '{'			   ({})<br/>
+2  25.002  123  '{'            ({})<br/>
 2  26.008  272  TOK_LIT_STRING ("beep")<br/>
 
 </code>
@@ -102,15 +102,15 @@ Part three consisted of writing an LALR parser using bison. <br/>
 <img src="{{ site.assets }}/table2.png" alt="HTML5 Icon" style="width:800px;height:450px; padding: 15px;">  
 <br/>
 
-These are the gramatical rules that the parser follows. In the implementation, they are translated to bison acceptable form. The bison acceptabble form includes  explicitly enumerating all possible rules with operators in them. Bison operator precedence declarations reduce the number of necessary rules.  
+These are the grammatical rules that the parser follows. In the implementation, they are translated to bison acceptable form. The bison acceptable form includes  explicitly enumerating all possible rules with operators in them. Bison operator precedence declarations reduce the number of necessary rules.  
 <img src="{{ site.assets }}/table3.png" alt="HTML5 Icon" style= "padding: 20px;" >  
 <p>
 This table shows operator precedence and associativity. It contains a superset of information used in the %left and %right declarations in the bison file. </p>
 <p>
 Construction of the abstract syntax tree is in a way such that all operators and operator-like tokens are the parents of their operands, which are adopted as their
-children. The children may be leaf nodes (identifiers or constants) or other expressions. Constants and identifiers are always leaf nodes. In general, interior nodesnmay have an arbitrarily large number of children.</p>
+children. The children may be leaf nodes (identifiers or constants) or other expressions. Constants and identifiers are always leaf nodes. In general, interior nodes may have an arbitrarily large number of children.</p>
 <p>
-More generally, bison reads tokens created by the scanner and pushes them onto a stack along with their semantic values. The stack is called the parser stack. Pushing a token is traditionally called shifting. And this shifting takes place based on the grammer rules. Lastly, shift reduce conflicts are some of the most common errors while parsing that can result in the parser getting stuck in a loop. 
+More generally, bison reads tokens created by the scanner and pushes them onto a stack along with their semantic values. The stack is called the parser stack. Pushing a token is traditionally called shifting. And this shifting takes place based on the grammar rules. Lastly, shift reduce conflicts are some of the most common errors while parsing that can result in the parser getting stuck in a loop. 
 </p>
 
 <div style="background-color: black;
@@ -147,7 +147,7 @@ The fourth part consisted of creating a symbol table and type checking. The symb
 Symbols in <i> oc </i> are of three types:
 <ol>
 <li> <i>Type Names</i>: Consist of reserved words [void, bool, char, int, string] and identifier names defined via struct definitions. These all have a global score and are entered into type name table. 
-<li> <i>Field Names</i>: These are identifiers that may be used immediately following the dot (.) operator for field selection. The same name may be used in different tructs without conflict.
+<li> <i>Field Names</i>: These are identifiers that may be used immediately following the dot (.) operator for field selection. The same name may be used in different structs without conflict.
 <li> <i>Function and Variable Names</i>: These identifiers are entered into the identifier symbol tables. All functions have global scope, whereas variables may have global or local scope, nested arbitrarily deep. Local scopes override global scopes and disjoint scopes may contain variables with the same names. 
 </ol>
 
@@ -155,7 +155,7 @@ There are also, three categories of types in <i> oc</i> and each has groups of t
 <ol>
 <li> <i> void </i> is neither primitive nor reference.
 <li> Primitive types are represented by inline inside structs and local or global variables.
-<li> Reference types are pointers to objects on the heap. They can be local, global, or fields. All object types reside on the heap. Pointer arithmitic is prohibited. 
+<li> Reference types are pointers to objects on the heap. They can be local, global, or fields. All object types reside on the heap. Pointer arithmetic is prohibited. 
 
 </ol>
 
@@ -172,8 +172,7 @@ d) Fields following a selector have the field attribute but no type attribute.<b
 e) Identifiers have the type attributes that they derive from the symbol table.<br/>
 f) Field selection sets the selector (.) attribute as follows : The left operand must.
 be a struct type or an error message is generated.<br/>
-g) For a CALL, evaluate the types of each of the arguments, and look up the func-
-tion in the identifier table. Then verify that the arguments are compatible with the parameters and error if not. <br/>
+g) For a CALL, evaluate the types of each of the arguments, and look up the function in the identifier table. Then verify that the arguments are compatible with the parameters and error if not. <br/>
 h) The expression operand of both if and while must be of type bool.
 i) The indexing operator for an array returns the address of one of its elements,
 and for a string, the address of one of its characters.
@@ -221,17 +220,17 @@ ment semantics, but in a typeful manner. </p>
 
 <h4> Program and Function Structure</h4>
 <ol>
-<li> Structure definitions come first with the struct keyword and closing brace left-aligned, and the fields idented.</li>
+<li> Structure definitions come first with the struct keyword and closing brace left-aligned, and the fields indented.</li>
 
 <li> Then, all string constants are listed in the order they appear in the program. Global declarations are all left-aligned.</li>
 
 <li> Next are all the global variable declarations.</li>
 
-<li> Finally, functions are emitted with one parameter per line. The function names and the two braces are left aligned, as are lables, but everything else is indented.</li>
+<li> Finally, functions are emitted with one parameter per line. The function names and the two braces are left aligned, as are labels, but everything else is indented.</li>
 </ol>
 
 <h4> Statements </h4>
-Statements are all indented, except for lables, and all declarations of local variables must be initialized.
+Statements are all indented, except for labels, and all declarations of local variables must be initialized.
 <ol> 
 <li> A label is emitted unindented on a line by itself. It consists of a keyword from the source language followed by the coordinates taken from the node</li> 
 
