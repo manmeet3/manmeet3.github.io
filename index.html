@@ -1,186 +1,31 @@
-<!DOCTYPE html>
-<html>
-
-  <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Manmeet Singh</title>
-
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-  <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/style.css">
-  <link rel="canonical" href="/">
-  <link rel="alternate" type="application/rss+xml" title="Manmeet Singh" href="/feed.xml">
-</head>
+---
+layout: default
+---
 
 
-  <body>
-
-    <div class='wrapper'>
-
-  <input data-function='swipe' id='swipe' type='checkbox'>
-  <label data-function='swipe' for='swipe' class="btn btn-default" >Menu</label>
-
-  <div class='content'>
-     <div class="post-container">
+ <div class="post-container">
 
   <h2 class="post-title">Blog</h2>
 
   <hr>
 
-  
+  {% for post in site.posts %}
     <div class ="post-preview">
       <span class="post-title">
-        <a class="post-link" href="/2016/07/25/ThoughsOnHumanPhys.html">
-          Thoughts on Human Physiology
+        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">
+          {{ post.title }}
         </a>
       </span>
 
       <span class="post-time">
-        <p>Jul 25, 2016</p>
+        <p>{{ post.date | date: "%b %-d, %Y" }}</p>
       </span>
 
 
     </div>
 
-    
-    <div class ="post-preview">
-      <span class="post-title">
-        <a class="post-link" href="/2016/07/17/Spring.html">
-          Spring Framework Notes
-        </a>
-      </span>
-
-      <span class="post-time">
-        <p>Jul 17, 2016</p>
-      </span>
-
-
-    </div>
-
-    
-    <div class ="post-preview">
-      <span class="post-title">
-        <a class="post-link" href="/2016/07/14/Review-TheoryofLearnable.html">
-          Review: Regarding theory of the learnable and cortical computation
-        </a>
-      </span>
-
-      <span class="post-time">
-        <p>Jul 14, 2016</p>
-      </span>
-
-
-    </div>
-
-    
-    <div class ="post-preview">
-      <span class="post-title">
-        <a class="post-link" href="/jekyll/2016/05/12/example-content.html">
-          Example content
-        </a>
-      </span>
-
-      <span class="post-time">
-        <p>May 12, 2016</p>
-      </span>
-
-
-    </div>
-
-    
+    {% endfor %}
 
 
 
 </div>
-
-  </div>
-
-  <div class='sidebar menu'>
-
-      <div id="picture" style="background-image: url(https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAAXZAAAAJGE5MWIwNTYyLTVlOWMtNDk0Yi04ZGU4LWVhZDk0ZWNhYmI1Mw.jpg)"></div>
-      <p>Recent UCSC grad searching for an entry-level position.</p>
-
-      <hr>
-
-      <div id="social-icons">
-        <ul>
-         <li><a href="https://mx.linkedin.com/in/msingh16"><i class="fa fa-linkedin"></i></a></li>
-            <li><a href="http://twitter.com/_manmeet3"><i class="fa fa-twitter"></i></a></li>
-            <li><a href="http://github.com/manmeet3"><i class="fa fa-github"></i></a></li>
-            <li><a href="http://steamcommunity.com/id/manmeet3"><i class="fa fa-steam"></i></a></li>
-            <li><a href="http://stackoverflow.com/users/3969732/manmeet-singh"><i class="fa fa-stack-overflow"></i></a></li>
-        </ul>
-      </div>
-
-       <hr>
-
-       <div class="navigation">
-        <ul>
-            
-                
-                <li><a href="/about/">About</a></li>
-            
-            
-                
-                <li><a href="/">Blog</a></li>
-            
-            
-                
-            
-                
-            
-                
-            
-                
-            
-        </ul>
-    </div>
-
-    <hr>
-
-     <div class="navigation">
-             <ul>
-               
-                 <li><a href="/categories/jekyll">jekyll</a></li>
-               
-             </ul>
-     </div>
-
-     <hr>
-
-     <p>© Manmeet Singh<p>
-     <p>Powered by Jekyll<p>
-
-  </div>
-
-</div>
-
-      
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-2.x-git.min.js"></script>
-      
-    <!-- Bootstrap Core JavaScript -->
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
-    <script src="/js/index.js"></script>
-
-  </body>
-
-    <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    </script>
-    
-    <script>
-    $(document).ready(function(){
-    $('#page-content-wrapper').fadeIn();
-    });
-    </script>
-
-</html>

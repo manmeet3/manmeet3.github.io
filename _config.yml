@@ -1,0 +1,20 @@
+# Site settings
+title: Manmeet Singh
+email: manmeet3 (at) gmail.com
+baseurl: "" # the subpath of your site, e.g. /blog
+#url: "http://yourdomain.com" # the base hostname & protocol for your site
+assets: "/assets"
+# Sidebar settings
+description: Recent UCSC grad searching for an entry-level position.
+
+# Social icons
+twitter: _manmeet3
+linkedin: msingh16
+github: manmeet3
+steam: manmeet3
+stackoverflow: manmeet-singh
+
+footer: © Manmeet Singh
+
+# Build settings
+markdown: kramdown
