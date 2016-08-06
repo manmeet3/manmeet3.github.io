@@ -1,4 +1,5 @@
 # Site settings
+url: "singhmanmeet.com"
 title: Manmeet Singh
 email: manmeet3 (at) gmail.com
 baseurl: "" # the subpath of your site, e.g. /blog
