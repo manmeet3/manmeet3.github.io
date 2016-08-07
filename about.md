@@ -18,4 +18,6 @@ Recently, I graduated from the University of California, Santa Cruz where I majo
 
 In my leisure time, I enjoy playing video games (currently csGO and starcraft2), working out and spending time with friends/family.
 
- 
+
+Contact: manmeet3 (at) gmail.com 
+*More detailed contact info on resume*

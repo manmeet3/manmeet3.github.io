@@ -2,6 +2,7 @@
 title: "Review: Regarding theory of the learnable and cortical computation"
 layout: post
 categories: Blog
+comments: true
 ---
 
 

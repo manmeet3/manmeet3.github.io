@@ -2,6 +2,8 @@
 title: "Thoughts on Human Physiology"
 layout: post
 categories: Blog
+comments: true
+
 ---
 <img src="{{ site.assets }}/humanbody.gif" alt="HTML5 Icon" style="width:80px;height:120px;  margin: auto; display: block; float: left"> 
 This is going to be kind of a run-on post containing much of what I have been thinking about this summer while attempting to re-engineer myself to become a better version of how I currently stand.  
