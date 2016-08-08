@@ -21,4 +21,4 @@ In my leisure time, I enjoy playing video games (currently csGO and starcraft2),
 ---------------------------------------------------------------------------
 Contact: manmeet3 (at) gmail.com 
 
-*More detailed contact info on resume*
+*More detailed contact info on resume (in the sidebar)*
