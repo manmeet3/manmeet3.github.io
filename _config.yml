@@ -19,3 +19,6 @@ footer: © 2016
 
 # Build settings
 markdown: kramdown
+
+kramdown:
+  syntax_highlighter: rouge

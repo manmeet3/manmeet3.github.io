@@ -10,5 +10,5 @@ The following is a review I wrote for my senior technical writing exit requireme
 
 As the title suggests, it is related to learning, more specifically, patterns of information that are learnable and those that are not. 
 
-You can: [view the PDF here]({{ site.assets }}/msingh.pdf).
+<b>You can: [view the PDF here]({{ site.assets }}/msingh.pdf).</b>
 
