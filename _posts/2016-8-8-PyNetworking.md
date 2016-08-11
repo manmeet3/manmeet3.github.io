@@ -10,17 +10,16 @@ This is a quick and to the point overview of network programming in python. The 
 
 
 <div align="center">
-This post will be broken down into 6 stages: <br/>
-I. Introduction<br/>
-II. Networking Fundamentals<br/>
-III. Client Programming<br/>
-IV. Internet Data Handling<br/>
-V. Web Programming<br/>
-VI. Advanced Networking
+This post will be broken down into 5 stages: <br/>
+I. Networking Fundamentals<br/>
+II. Client Programming<br/>
+III. Internet Data Handling<br/>
+IV. Web Programming<br/>
+V. Advanced Networking
 <br/>
 </div>
 
-## Introduction
+## I. Networking Fundamentals
 Network programming is a major use of python. Python standard library has a wide support for network protocols, data encoding/decoding and other utilities you might have used in C/C++. An appealing reason to use python for network programs over C/C++ or Java is that it tends to be substantially easier to code and update in the future due to its readibility.
 
 
@@ -237,6 +236,80 @@ Essentially the difference between UDP and TCP is that TCP's continuous data str
 {% highlight py %}
 >>> s = socket(AF_UNIX, SOCK_STREAM | SOCK_DGRAM)	# creation of socket
 >>> s.bind("/tmp/foo")		# Server binding
->>> s.connect("/tmp/foo")		# Client connection 
+>>> c.connect("/tmp/foo")		# Client connection 
 				# Rest of the programming interface the same
 {% endhighlight %}
+
+**Sockets and Concurrency**
+For a server handing multiple clients, each client gets its own socket on server. To manage multiple clients:
+Server must always be ready to accept new connections
+and allow each client to operate independently. There are many options here, the three we'll discuss are <br>
+
+1) Threaded Server: Each client handled by a unique thread
+{% highlight py %}
+>>> import threading
+>>> from socket import *
+>>> 
+>>> def handle_client(c):	# defined function to be called by each new thread later
+>>>   # handle each client here
+>>>   c.close()
+>>>   return
+>>> 
+>>> s = socket(AF_INET,SOCK_STREAM)
+>>> s.bind(("",9000))
+>>> s.listen(5)
+>>> while True:	# typical create and bind socket and run in a loop
+>>> c,a = s.accept()
+>>> t = threading.Thread(target=handle_client, args=(c,))	# call function defined above, using as a parameter
+{% endhighlight %}
+
+2) Forking Server (UNIX): Each client handled by a subprocess
+{% highlight py %}
+>>> import os
+>>> from socket import *
+>>>
+>>> s = socket(AF_INET,SOCK_STREAM)
+>>> s.bind(("",9000))
+>>> s.listen(5)
+>>> while True:	
+>>>   c,a = s.accept()
+>>> 
+>>>   if os.fork() == 0:
+>>>       # Child process. Manage client here
+>>>       c.close()
+>>>       os._exit(0)
+>>>   else:
+      # Parent process. Clean up and go back to wait for more connections
+>>> c.close()
+{% endhighlight %}
+
+3) Asynchronous Server: Server handles all clients in an event loop
+
+{% highlight py %}
+>>> import select
+>>> from socket import *
+>>>
+>>> s = socket(AF_INET,SOCK_STREAM)
+>>> clients = [] # List of all active client sockets
+>>> while True:
+>>>   # Look for activity on the sockets
+>>>   input,output,err = select.select(s+clients, clients, clients)
+>>>   # process all sockets ready for output
+>>>   for o in output: # do something for each
+>>> 
+{% endhighlight %}
+
+A few **Utility Functions**:
+
+{% highlight py %}
+>>> socket.gethostname() # As stated -- returns a hostname like 'foo.bar.com'
+>>> socket.gethostbyname("www.python.org") # Returns ip address of the remote machine
+>>> socket.gethostbyaddr("82.93.246.218")  # Fetches information on remote ip like its hostname and other available data.
+{% endhighlight %}
+
+
+## II. Client Programming
+**Overview** - Python has library modules for interacting with a variety of standard internet services: HTTP, FTP, SMTP, NNTP, XML-RPC, etc. In this section, we'll look at how some of these library modules work while focusing mainly on the web (HTTP).
+
+**urllib** module is a high level module that allows clients to connect to a variety 
+
