@@ -311,5 +311,5 @@ A few **Utility Functions**:
 ## II. Client Programming
 **Overview** - Python has library modules for interacting with a variety of standard internet services: HTTP, FTP, SMTP, NNTP, XML-RPC, etc. In this section, we'll look at how some of these library modules work while focusing mainly on the web (HTTP).
 
-**urllib** module is a high level module that allows clients to connect to a variety 
+**urllib** module is a high level module that allows clients to connect to a variety of internet services (listed above). It also works with typical URLs on the web.(40)
 
