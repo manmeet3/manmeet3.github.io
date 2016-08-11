@@ -20,7 +20,7 @@ VI. Advanced Networking
 <br/>
 </div>
 
-### Introduction
+## Introduction
 Network programming is a major use of python. Python standard library has a wide support for network protocols, data encoding/decoding and other utilities you might have used in C/C++. An appealing reason to use python for network programs over C/C++ or Java is that it tends to be substantially easier to code and update in the future due to its readibility.
 
 
@@ -66,6 +66,8 @@ Content-length: 48823
 <b> Data Transport</b> consists of two basic types of communication: <br>
 1) Streams (TCP): This is where computers establish with each other and read/write data in a continuous stream of bytes (a file). This is used most commonly.<br>
 2) Datagrams (UDP): Computers send discrete packets of some bytes to each other. The packets are separate and self-contained entities.
+
+### TCP Sockets
 
 <b> Sockets </b> are programming abstraction for network code. These are the endpoints for a communication channel between two devices. To create a socket in python:
 {% highlight ruby %}
@@ -113,7 +115,7 @@ Waiting for connection:
 >>> s = socket(AF_INET, SOCK_STREAM)
 >>> s.bind(("",15000))
 >>> s.listen(5)
->>> c,a = s.accept()
+>>> c,a = s.accept()   	   # c is new socket created for this connection while a is the network/port addr of client as a tuple
 # executed after cliend sends data
 >>> data = c.recv(1024)
 >>> data
@@ -144,3 +146,97 @@ Making a connection:
 >>> s.recv(1024)			#wait until next signal from server
 'Goodbye' # after the server sends close signal with a goodbye
 #server sends close and {% endhighlight %}
+
+
+Socket programming is often a mess: huge number of options, many corner cases and many failure modes/reliability issues.
+
+**Partial Reads/Writes**  happen where *recv()* length is a maximum limit, but it can be the case that less data than expected is received. In TCP, the data stream is continuous and thus no concept of records or fragments exists. A client sending 2 packets of data (in UDP terms) to a server through TCP, if interrupted at an arbitrary point before finishing, could be at any position within those two packets. 
+For most non-specialized applications, you can send all data using *sendall()* or in complete syntax *socket.sendall(data)*. You would not use this if networking is mixed in with other kinds of processing (ie. screen updates, multitasking, etc.)
+
+**Data Reassembly** is done in a loop as shown in the example above. You basically initiate a forever loop, get data in chunks and append the fragments to (generally) an array. If a null is received through socket.recv(data) command, it means the end of sent data.
+
+Another point is to note the .join used in the case of a string. You should lean towards using .join where possible as += is slow (allocating a new string or other DS thats an addition of the two).
+
+
+**Timeouts** are used to prevent deadlocks in case a receiver is waiting indefinitely for the sender to send data. In such casses, timesouts can be used to break connection if no response is received and raise a *timeout* exception. Timeouts can be disabled using: S.settimeout(None). 
+
+**Non-blocking Sockets**
+Instead of disabling timeouts, we can also set sockets to a non-blocking state using :s.setblocking(False). Future send(),recv() operations will raise an exception if the operation would have blocked. 
+
+
+The difference between blocking and non-blocking sockets is that in blocking sockets, once a recv() command is issued, the control is not returned to the program until either data is received or an error (possibly timeout) occurs. This means that any other operation must wait. In non-blocking sockets on the other hand, you don't have to wait for an operation to complete, and an exception is raised in the case that a connection cannot be established. This is an invaluable tool if you need to switch between many different connected sockets, and want to ensure that none of them cause the program to lock up.
+
+*Socket Options*: Sockets have a large number of parameteres that can be set using *s.setsockopt()*
+
+
+As examples: <br>
+a) Blocking I/O  <br>
+Wait until a new connection is established
+{% highlight py %}
+>>> from socket import *
+>>> s = socket(AF_INET, SOCK_STREAM)
+>>> s.bind(("",15000))
+>>> s.listen(5)
+>>> c,a = s.accept()		#function waits indefinitely until a new connection arrives--blocking I/O in action
+>>> s.send("Hello?")		# typed in case of c, to show that pending messages can be received immediately
+{% endhighlight %}
+In this code, the accept() function waits indefinitely until a new connection arrives. This is blockin I/O in action.
+
+
+b) Blocking I/O with a timeout <br>
+In this case the settimeout() method sets a time in seconds to wait before calling a non-established connection quits.
+{% highlight py %}
+>>> from socket import *
+>>> s = socket(AF_INET, SOCK_STREAM)	# client socket
+>>> s.connect(("localhost",15000))     # connect to the server above
+>>> c.settimeout(15)
+>>> c.recv(8192)				#... wait 15 seconds. See what happens ...	
+
+{% endhighlight %}
+c) Non-blocking I/O   <br>
+In this case, operations immediately raise an exception if the operation can't be completely. To the code in part b, add:
+{% highlight py %}
+>>> c.setblocking(False)
+>>> c.recv(8192)
+Traceback (most recent call last):
+  File "", line 1, in 
+socket.error: [Errno 35] Resource temporarily unavailable
+>>> c.recv(8192)
+'Hello?'				# Pending string received and no error thrown. All because the data was ready to be received upon opening connection
+{% endhighlight %}
+
+<h3> UDP + other supported socket types </h3>
+
+<b>UDP:</b> Datagrams are packets of data sent as discrete entities. They have no concept of a connection, reliability or ordering. Datagrams can be lost or arrive in random order. Although one important thing to take note is that the lack of security checks means that it is fast and lightweight, hence used in video games, skype, etc.
+
+A simple UDP Server can look like:
+{% highlight py %}
+>>> from socket import *
+>>> s = socket(AF_INET, SOCK_DGRAM)
+>>> while True:
+...  data,addr = s.recvfrom(maxsize)		# Sent Data
+...  resp = "String to send"
+...  s.sendto(resp,addr)				# Important to not that data is sent and received in the same loop
+{% endhighlight %}
+
+Sending a datagram to a server:
+{% highlight py %}
+>>> from socket import *
+>>> s = socket(AF_INET,SOCK_DGRAM)
+>>> msg = "Hello World"
+>>> s.sendto(msg,("server.com",10000))
+>>> data, addr = s.recvfrom(maxsize)
+data, addr = s.recvfrom(maxsize) 		# Optional to wait for a response where data is the destination variable and addr is address to receive from
+{% endhighlight %}
+
+
+Essentially the difference between UDP and TCP is that TCP's continuous data stream exchanges files and data sequentially in the order it is requested and sent where as UDP has no concept of this and begins to perform a send or receive operation as soon as it is executed.
+
+*Unix domain sockets* are sometimes used for fast inter-process-communication or pipes between processes
+
+{% highlight py %}
+>>> s = socket(AF_UNIX, SOCK_STREAM | SOCK_DGRAM)	# creation of socket
+>>> s.bind("/tmp/foo")		# Server binding
+>>> s.connect("/tmp/foo")		# Client connection 
+				# Rest of the programming interface the same
+{% endhighlight %}
