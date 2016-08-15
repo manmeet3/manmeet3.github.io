@@ -11,6 +11,7 @@ body
     margin-top: 20px ! important;
     overflow-x: hidden;
     height: 100%;
+    background-color:#EAEAE6;
 }
 
 i
@@ -72,7 +73,7 @@ input[data-function*='swipe']:checked ~ label[data-function*='swipe'] {
 
 #social-icons
 {
-    font-size:  1.1em;
+    font-size:  1.5em;
     display: block;
 }
 
@@ -89,7 +90,7 @@ input[data-function*='swipe']:checked ~ label[data-function*='swipe'] {
 
 #social-icons a {
     font-size: 16px;
-    color: rgb(162, 163, 163);
+    color: rgb(172, 173, 173);
 }
 
 /* ------------ Content Style -------------- */
@@ -101,7 +102,8 @@ input[data-function*='swipe']:checked ~ label[data-function*='swipe'] {
   transition: transform .3s;
 
   font-family: "Roboto Condensed", Arial, sans-serif;
-  background-color: #fff;
+  background-image: url('/assets/background.jpg');
+  background-size: cover;
   font-size: 16px;
   line-height: 1.5em;
   color: #666;
@@ -112,7 +114,7 @@ input[data-function*='swipe']:checked ~ label[data-function*='swipe'] {
     margin-top: 20px;
     margin-bottom: 20px;
     border: 0;
-    border-top: 1px solid #F7F1F1;
+    border-top: 1px solid #999999;
     border-bottom: 1px solid #fff;
 }
 
@@ -138,20 +140,20 @@ input[data-function*='swipe']:checked ~ label[data-function*='swipe'] {
     font-weight: bold;
 }
 
-.content p
+.content p /* date of each post*/
 {
     font-family: "Roboto Condensed", Arial, sans-serif;
-    background-color: #fff;
+    background-color: transparent;
     font-size: 16px;
     line-height: 24px;
     color: #666666;
     font-weight: 300;
 }
 
-.content a {
+.content a { /* Title of each post */
 
     font-family: "Roboto Condensed", Arial, sans-serif;
-    background-color: #fff;
+    background-color: transparent;
     font-size: 16px;
     line-height: normal;
     font-style: normal;
@@ -199,7 +201,7 @@ input[data-function*='swipe']:checked ~ .sidebar {
   transform: translate3d(-180px,0px,0px);
   position: absolute;
   width: 180px;
-  color: #eee;
+  color: #EAEAEA;
   left: 0;
   height: 100%;
   transition: all .3s;
@@ -214,7 +216,7 @@ input[data-function*='swipe']:checked ~ .sidebar {
   p
   {
     font-family: "Roboto Condensed", Arial, sans-serif;
-    background-color: #fff;
+    background-color: #EAEAEA;
     font-size: 14px;
     line-height: normal;
     font-style: normal;
@@ -241,11 +243,11 @@ input[data-function*='swipe']:checked ~ .sidebar {
     a{
 
       font-family: "Roboto Condensed", Arial, sans-serif;
-      background-color: #fff;
+      background-color: #EAEADE;
       font-size: 14px;
       line-height: normal;
       font-style: normal;
-      color: #8C8C8C;
+      color: black;
       font-weight: 300;
 
     }
@@ -253,7 +255,7 @@ input[data-function*='swipe']:checked ~ .sidebar {
   }
 }
 
-.highlight  { background: #ffffff; }
+.highlight  { background: #EAEAEA; }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
 .highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
 .highlight .k { font-weight: bold } /* Keyword */

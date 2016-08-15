@@ -6,7 +6,7 @@ baseurl: "" # the subpath of your site, e.g. /blog
 #url: "http://yourdomain.com" # the base hostname & protocol for your site
 assets: "/assets"
 # Sidebar settings
-description: Recent UCSC grad searching for an entry-level position.
+description: Recent UCSC grad seeking entry-level opportunities.
 
 # Social icons
 twitter: _manmeet3
