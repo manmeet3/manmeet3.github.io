@@ -1,1 +1,0 @@
-Personal Page based on the Taken Jekyll theme

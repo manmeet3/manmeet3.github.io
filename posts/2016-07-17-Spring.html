@@ -1,0 +1,91 @@
+
+I have decided to start learning the Spring framework between the time I graduated from university until I find a job. I chose Spring due to its wide spread use in the enterprise Java world. 
+
+Since Spring is a fairly large framework:   
+
+
+<img src="/assets/spring_overview.jpg" alt="HTML5 Icon" style="width:800px;height:450px;">  
+
+
+I will start by learning about the fundamentals of spring core which include things like: beans containers, core, and supporting utilities amongst other things. After developing a working knowledge, I will move on to Spring MVC and start by building a RESTful service that only uses the MC out of the MVC. I will design a Spring based android client for this that will be able to perform read/write/update functions on the service. The process for the RESTful service and its android client will be documented under development sub-section of the website. Additionally, I will add more features to the service and a front-end as I learn more about the inner working of Spring and its API.
+
+This is an ongoing piece of writing that serves as a summary of the things I am learning as I delve into the framework.
+
+### General Overview
+Spring is a JVM based open source framework created to address the complexity of enterprise application development. One of the chief advantages of the Spring framework is its layered architecture, which allows you to be selective about which of its components you use while also providing a cohesive framework for J2EE application development. It provides great portability as Spring applications can be packed into .jar files that can then be run on any machine with JVM. 
+
+
+
+### Beans and Beanfactory
+Beans are the basic building blocks that define and instantiate classes from a config file (can be .xml, .java, etc.)
+
+
+### Lifecycle callbacks:
+Init and destroy methods for a class can be defined 2 ways  
+1. public class X implements InitializingBean, DisposableBean { }  
+2. define in the bean config file:
+{% highlight ruby %}
+  <bean id ='X' class ='Y' initmethod = 'initmethod' destroy-method='dest-method'>
+ {% endhighlight %}
+
+
+### BeanPostProcessor:
+Post creation processing for beans
+This post processing runs for every bean in the config file
+1. Create a class that implements the Beanprocessor class
+2. Implement methods: public Object postProcessAfterInitialization
+public Object postProcessBeforeInitialization 
+3. Initialize the processor class by creating a new bean in the config file.
+
+### Writing a BeanFactory Processor:
+1. class X implements BeanFactoryPostProcessor which contains all of the methods that the post processing happens with. 
+2. Declare this class in the bean file and it will be run each time.
+
+*Properties files* → properties files can be added with .properties extension. You must then include org.springframework.beans.factory.config.PropertyPlaceholderConfigurer which automatically looks through the properties file and replaces it in place of the appropriate tags ie. ${pointA.pointX}
+
+*Interfaces* → create an interface class with method(s) that you want to use multiple times on similar objects. Implement this class in all of the other classes that it serves as an interface to. Create an object of the class you wish to use the interface with and type cast that to the interface class.
+ie. Shape shape = (Shape) context.getBeat (“triangle”); for the class id triangle which shape is an interface to. 
+
+
+### Annotations:
+
+Can use annotations for required methods, but need to write a bean post processor which ensures that the annotations are enforced. 
+
+@autowire annotation can be used to autowire. If only the annotation is put in place, then the config file is searched for a bean that matches the type with the argument into the function.
+
+Furthermore, qualifiers can be used using the @Qualifier(“xxxx”) annotation and adding a 
+{% highlight ruby %} <qualifier  value='xxxx'> {% endhighlight %} subtag.
+*might need to add xml namespaces to the bean config if attributes such as qualifier are not picked up*
+
+@Resource (name=”BEANID”) initializes the specific method with beanid as the arg. 
+Be default the resource tag goes for the bean with the function variable argument name. 
+
+JSR-250 annotations include: @PostConstruct, @PreDestroy perform self explanatory actions upon ben creation and destruction
+
+@Component annotation above a class adds it to the bean config automatically. This results in a static behavior of the class. This is an advantage of using config file. 
+Need to add the tag {% highlight ruby %} <context:component-scan base-package="SOMEPACKAGETOSCAN"></context:component-scan> {% endhighlight %} to the config 
+
+
+### Using MessageSource to get text from property files
+ApplicationContext provides support for messaging and internationalization. 
+
+{% highlight ruby %}
+<bean id='XXXX' class="org.springframework.context.ResourceBundleMessageSource"
+  <property name="basenames">
+     <list>
+      	CAN LIST ALL THE PROPERTIES FILES HERE USING VALUE TAG
+     </list>
+  </property>
+</bean>
+{% endhighlight %} 
+You can then declare private MessageSource variables in any class and use them to print messages. Then, the function for calling the message with some key from the properties file is: 
+
+{% highlight ruby %} this.messageSourceVar.getMessage("msgKey", "parameters", "defaultgreeting", "locale")
+{% endhighlight %} 
+
+Sources:  
+ [javafunda-suddha.blogspot.com](http://javafunda-suddha.blogspot.com/2012/07/spring-framework-interview-questions.html
+"amazon")  
+ [Spring in Action 4th ed.](https://www.amazon.com/Spring-Action-Craig-Walls/dp/161729120X/m "amazon")  
+[Youtube Video Tutorials](
+https://www.youtube.com/playlist?list=PLC97BDEFDCDD169D7 "youtube")
