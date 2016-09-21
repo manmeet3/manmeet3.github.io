@@ -381,8 +381,8 @@ th {
   line-height: 1;
   -webkit-font-smoothing: antialiased; }
 
-.icon-tn-logo:before {
-  content: "\e001"; }
+.icon-logo:before {
+  content: "ms"; }
 
 .icon-arrow-right:before {
   content: "\e000"; }
@@ -567,7 +567,7 @@ body {
   width: 100%;
   left: 0; }
 
-nav.tn-nav-wrap {
+nav.nav-wrap {
   height: 45px;
   width: 100%;
   background: white;

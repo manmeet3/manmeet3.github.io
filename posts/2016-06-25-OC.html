@@ -1,6 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>  Fundamentals of a compiler </title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/postassets/css/style.css">
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+  </head>
+  <body class=" post ">
 
+  <div class="tilt">
 
-The OC compiler was written as a quarter long project for CMPS104A - Fundamentals of Compiler Design during Fall of 2015. 
+  <article class="why-we-create">
+
+<h3> The OC compiler was written as a quarter long project for CMPS104A - Fundamentals of Compiler Design during Fall of 2015. </h3>
 
 
 <b>All source code [HERE](https://github.com/manmeet3/OC-compiler)</b>
@@ -97,11 +112,11 @@ These tokens are written into a .tok file. <br/>
 <h3> III. LALR Parser</h3>
 Part three consisted of writing an LALR parser using bison. <br/>
 
-<img src="{{ site.assets }}/table2.png" alt="HTML5 Icon" style="width:600px;height:450px; padding: 15px;">  
+<img src="/assets/table2.png" alt="HTML5 Icon" style="width:600px;height:450px; padding: 15px;">  
 <br/>
 
 These are the grammatical rules that the parser follows. In the implementation, they are translated to bison acceptable form. The bison acceptable form includes  explicitly enumerating all possible rules with operators in them. Bison operator precedence declarations reduce the number of necessary rules.  
-<img src="{{ site.assets }}/table3.png" alt="HTML5 Icon" style= "padding: 20px;" >  
+<img src="/assets/table3.png" alt="HTML5 Icon" style= "padding: 20px;" >  
 <p>
 This table shows operator precedence and associativity. It contains a superset of information used in the %left and %right declarations in the bison file. </p>
 <p>
@@ -211,7 +226,7 @@ ment semantics, but in a typeful manner. </p>
 
 <p>The intermediate langugae here looks very much like C, except that each oil statement should be capable of being translated into a single assembly language instruction. The basic grammer used in an oil program is the same metanotation as was used in part III.
 </p>
-<img src="{{ site.assets }}/oilgram.png" alt="HTML5 Icon" style= "padding: 20px;" >  
+<img src="/assets/oilgram.png" alt="HTML5 Icon" style= "padding: 20px;" >  
 
 
 <h4> Program and Function Structure</h4>
@@ -315,3 +330,47 @@ break_5_11_0:;<br/>
 </code>
 
 </div>
+
+<img src="/assets/dirstruct.png" alt="HTML5 Icon" style= "padding: 20px;" >  
+
+Supported operations include:  file creation, directory traversal, file reads, writes and seeks, etc. Soft or hard links are not supported
+
+     <div class="comments-wrap">
+  
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+ *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+ *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
+/*
+var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//singhmanmeet-1.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+
+<nav class="nav-wrap">
+
+    <h1 class="icon-logo logo-small"></h1>
+
+    <a class="title-string" href="/articles">
+      <p class="blurb">One day at a time, it all changes.</p>
+      <p class="back-message"><i class="icon-reply"></i>Go back to Articles</p>
+    </a>
+
+
+</nav>
+</body>
+</html>

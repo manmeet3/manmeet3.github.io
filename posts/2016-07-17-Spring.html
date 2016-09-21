@@ -1,91 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>  Spring notes</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/postassets/css/style.css">
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+  </head>
+  <body class=" post ">
 
-I have decided to start learning the Spring framework between the time I graduated from university until I find a job. I chose Spring due to its wide spread use in the enterprise Java world. 
+  <div class="tilt">
 
-Since Spring is a fairly large framework:   
+  <article class="why-we-create">
+
+<h2> Spring framework notes</h2>
+<p> I have decided to start learning the Spring framework between the time I graduated from university until I find a job. I chose Spring due to its wide spread use in the enterprise Java world. 
+
+Since Spring is a fairly large framework:   </p>
 
 
 <img src="/assets/spring_overview.jpg" alt="HTML5 Icon" style="width:800px;height:450px;">  
 
+<p>I will start by learning about the fundamentals of spring core which include things like: beans containers, core, and supporting utilities amongst other things. After developing a working knowledge, I will move on to Spring MVC and start by building a RESTful service that only uses the MC out of the MVC. I will design a Spring based android client for this that will be able to perform read/write/update functions on the service. The process for the RESTful service and its android client will be documented under development sub-section of the website. Additionally, I will add more features to the service and a front-end as I learn more about the inner working of Spring and its API.</p>
 
-I will start by learning about the fundamentals of spring core which include things like: beans containers, core, and supporting utilities amongst other things. After developing a working knowledge, I will move on to Spring MVC and start by building a RESTful service that only uses the MC out of the MVC. I will design a Spring based android client for this that will be able to perform read/write/update functions on the service. The process for the RESTful service and its android client will be documented under development sub-section of the website. Additionally, I will add more features to the service and a front-end as I learn more about the inner working of Spring and its API.
+<p>
+This is an ongoing piece of writing that serves as a summary of the things I am learning as I delve into the framework.</p>
 
-This is an ongoing piece of writing that serves as a summary of the things I am learning as I delve into the framework.
-
-### General Overview
-Spring is a JVM based open source framework created to address the complexity of enterprise application development. One of the chief advantages of the Spring framework is its layered architecture, which allows you to be selective about which of its components you use while also providing a cohesive framework for J2EE application development. It provides great portability as Spring applications can be packed into .jar files that can then be run on any machine with JVM. 
-
-
-
-### Beans and Beanfactory
-Beans are the basic building blocks that define and instantiate classes from a config file (can be .xml, .java, etc.)
+<h3> General Overview</h3>
+<p>Spring is a JVM based open source framework created to address the complexity of enterprise application development. One of the chief advantages of the Spring framework is its layered architecture, which allows you to be selective about which of its components you use while also providing a cohesive framework for J2EE application development. It provides great portability as Spring applications can be packed into .jar files that can then be run on any machine with JVM. </p>
 
 
-### Lifecycle callbacks:
-Init and destroy methods for a class can be defined 2 ways  
-1. public class X implements InitializingBean, DisposableBean { }  
-2. define in the bean config file:
-{% highlight ruby %}
-  <bean id ='X' class ='Y' initmethod = 'initmethod' destroy-method='dest-method'>
- {% endhighlight %}
+
+<h3> Beans and Beanfactory</h3>
+<p>Beans are the basic building blocks that define and instantiate classes from a config file (can be .xml, .java, etc.) </p>
 
 
-### BeanPostProcessor:
-Post creation processing for beans
+<h3> Lifecycle callbacks: </h3>
+<p>Init and destroy methods for a class can be defined 2 ways  
+1. public class X implements InitializingBean, DisposableBean { }  <br>
+2. define in the bean config file: <br>
+<code style="background-color: black; color: white;"> 
+  &lt bean id ='X' class ='Y' initmethod = 'initmethod' destroy-method='dest-method'>
+</code>
+</p>
+
+
+<h3> BeanPostProcessor:</h3>
+<p> Post creation processing for beans
 This post processing runs for every bean in the config file
-1. Create a class that implements the Beanprocessor class
-2. Implement methods: public Object postProcessAfterInitialization
-public Object postProcessBeforeInitialization 
-3. Initialize the processor class by creating a new bean in the config file.
+1. Create a class that implements the Beanprocessor class<br>
+2. Implement methods: <br><code style="background-color: black; color: white;"> public Object postProcessAfterInitialization </code><br>
+<code style="background-color: black; color: white;"> public Object postProcessBeforeInitialization </code><br>
+3. Initialize the processor class by creating a new bean in the config file.<br></p>
 
-### Writing a BeanFactory Processor:
-1. class X implements BeanFactoryPostProcessor which contains all of the methods that the post processing happens with. 
-2. Declare this class in the bean file and it will be run each time.
+<h3> Writing a BeanFactory Processor: </h3>
+<p>1. class X implements BeanFactoryPostProcessor which contains all of the methods that the post processing happens with. <br>
+2. Declare this class in the bean file and it will be run each time. <br> </p>
 
-*Properties files* → properties files can be added with .properties extension. You must then include org.springframework.beans.factory.config.PropertyPlaceholderConfigurer which automatically looks through the properties file and replaces it in place of the appropriate tags ie. ${pointA.pointX}
+<p>*Properties files* → properties files can be added with .properties extension. You must then include org.springframework.beans.factory.config.PropertyPlaceholderConfigurer which automatically looks through the properties file and replaces it in place of the appropriate tags ie. ${pointA.pointX} </p>
 
-*Interfaces* → create an interface class with method(s) that you want to use multiple times on similar objects. Implement this class in all of the other classes that it serves as an interface to. Create an object of the class you wish to use the interface with and type cast that to the interface class.
+<p>*Interfaces* → create an interface class with method(s) that you want to use multiple times on similar objects. Implement this class in all of the other classes that it serves as an interface to. Create an object of the class you wish to use the interface with and type cast that to the interface class. </p>
 ie. Shape shape = (Shape) context.getBeat (“triangle”); for the class id triangle which shape is an interface to. 
 
 
-### Annotations:
+<h3> Annotations:</h3>
 
-Can use annotations for required methods, but need to write a bean post processor which ensures that the annotations are enforced. 
+<p>Can use annotations for required methods, but need to write a bean post processor which ensures that the annotations are enforced. </p>
 
-@autowire annotation can be used to autowire. If only the annotation is put in place, then the config file is searched for a bean that matches the type with the argument into the function.
+<p>@autowire annotation can be used to autowire. If only the annotation is put in place, then the config file is searched for a bean that matches the type with the argument into the function. </p>
 
-Furthermore, qualifiers can be used using the @Qualifier(“xxxx”) annotation and adding a 
-{% highlight ruby %} <qualifier  value='xxxx'> {% endhighlight %} subtag.
-*might need to add xml namespaces to the bean config if attributes such as qualifier are not picked up*
+<p>Furthermore, qualifiers can be used using the @Qualifier(“xxxx”) annotation and adding a 
+<code style="background-color: black; color: white;"> &ltqualifier  value='xxxx'></code> subtag.
+*might need to add xml namespaces to the bean config if attributes such as qualifier are not picked up* </p>
 
-@Resource (name=”BEANID”) initializes the specific method with beanid as the arg. 
-Be default the resource tag goes for the bean with the function variable argument name. 
+<p>@Resource (name=”BEANID”) initializes the specific method with beanid as the arg. 
+Be default the resource tag goes for the bean with the function variable argument name. </p>
 
-JSR-250 annotations include: @PostConstruct, @PreDestroy perform self explanatory actions upon ben creation and destruction
+<p>JSR-250 annotations include: @PostConstruct, @PreDestroy perform self explanatory actions upon ben creation and destruction</p>
 
-@Component annotation above a class adds it to the bean config automatically. This results in a static behavior of the class. This is an advantage of using config file. 
-Need to add the tag {% highlight ruby %} <context:component-scan base-package="SOMEPACKAGETOSCAN"></context:component-scan> {% endhighlight %} to the config 
+<p>@Component annotation above a class adds it to the bean config automatically. This results in a static behavior of the class. This is an advantage of using config file. </p>
+<p> Need to add the tag <br><code style="background-color: black; color: white;"> &ltcontext:component-scan base-package="SOMEPACKAGETOSCAN"></context:component-scan></code> to the config 
 
 
-### Using MessageSource to get text from property files
-ApplicationContext provides support for messaging and internationalization. 
+<h3> Using MessageSource to get text from property files </h3>
+<p>ApplicationContext provides support for messaging and internationalization. </p>
 
-{% highlight ruby %}
-<bean id='XXXX' class="org.springframework.context.ResourceBundleMessageSource"
-  <property name="basenames">
-     <list>
-      	CAN LIST ALL THE PROPERTIES FILES HERE USING VALUE TAG
-     </list>
-  </property>
-</bean>
-{% endhighlight %} 
-You can then declare private MessageSource variables in any class and use them to print messages. Then, the function for calling the message with some key from the properties file is: 
+<code style="background-color: black; color: white;">
+&ltbean id='XXXX' class="org.springframework.context.ResourceBundleMessageSource"<br>
+  &ltproperty name="basenames"><br>
+     &ltlist><br>
+      	** Can list all the properties files here using VALUE tag **<br>
+     &lt/list><br>
+  &lt/property><br>
+&lt/bean><br>
+</code>
+<p>You can then declare private MessageSource variables in any class and use them to print messages. Then, the function for calling the message with some key from the properties file is: </p>
 
-{% highlight ruby %} this.messageSourceVar.getMessage("msgKey", "parameters", "defaultgreeting", "locale")
-{% endhighlight %} 
+<code style="background-color: black; color: white;">this.messageSourceVar.getMessage("msgKey", "parameters", "defaultgreeting", "locale")
+</code>
+<p>
+------------ Sources: <br> 
+<a href="http://javafunda-suddha.blogspot.com/2012/07/spring-framework-interview-questions.html">javafunda-suddha.blogspot.com</a><br>
+ <a href="https://www.amazon.com/Spring-Action-Craig-Walls/dp/161729120X/m">Amazon</a><br>
+   <a href="https://www.youtube.com/playlist?list=PLC97BDEFDCDD169D7">Youtube Video Tutorials</a><br>
 
-Sources:  
- [javafunda-suddha.blogspot.com](http://javafunda-suddha.blogspot.com/2012/07/spring-framework-interview-questions.html
-"amazon")  
- [Spring in Action 4th ed.](https://www.amazon.com/Spring-Action-Craig-Walls/dp/161729120X/m "amazon")  
-[Youtube Video Tutorials](
-https://www.youtube.com/playlist?list=PLC97BDEFDCDD169D7 "youtube")
+</p>
+
+  <div class="comments-wrap">
+  
+        <div id="disqus_thread"></div>
+<script>
+
+/**
+ *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+ *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
+/*
+var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//singhmanmeet-1.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+
+<nav class="nav-wrap">
+
+    <h1 class="icon-logo logo-small"></h1>
+
+    <a class="title-string" href="/articles">
+      <p class="blurb">One day at a time, it all changes.</p>
+      <p class="back-message"><i class="icon-reply"></i>Go back to Articles</p>
+    </a>
+
+
+</nav>
+</body>
+</html>
