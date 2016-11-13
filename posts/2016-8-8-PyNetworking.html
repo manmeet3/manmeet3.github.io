@@ -129,7 +129,7 @@ s.bind(("",15000))<br>
 s.listen(5)<br>
 c,a = s.accept()       # c is new socket created for this connection while a is the network/port addr of client as a tuple<br>
 
-<h4>executed after client sends data</h4>
+<h5>executed after client sends data:</h5>
 
 data = c.recv(1024)<br>
 data<br>
@@ -143,36 +143,32 @@ c,a = s.accept()        # goes back to listening for more clients<br>
 </code>
 
 
-<p>Making a connection:
-{% highlight py %}</p>
+<p>Making a connection:</p>
+<code style="background-color: black; color: white;"> 
 
-<blockquote>
-  <blockquote>
-  <blockquote>
-  <p>from socket import *
-s = socket(AF<em>INET, SOCK</em>STREAM)
-s.connect(("localhost",15000))
-c
-<socket._socketobject object at 0x10028d910>
-a
-('127.0.0.1', 62793)
-s.send("Hello World")
-11</p>
+  <code style="background-color: black; color: white;"> from socket import *<br>
+s = socket(AF<em>INET, SOCK</em>STREAM)<br>
+s.connect(("localhost",15000))<br>
+c<br>
+&ltsocket._socketobject object at 0x10028d910><br>
+a<br>
+('127.0.0.1', 62793)<br>
+s.send("Hello World")<br>
+11</code>
 
-<h1>after Server sends back a reply to hello string</h1>
+<h5>after Server sends back a reply to hello string</h5>
 
-<p>resp = s.recv(1024)
+<code style="background-color: black; color: white;"> resp = s.recv(1024)
 resp
 'Hello Yourself'
 s.recv(1024)            #wait until next signal from server
-'Goodbye' # after the server sends close signal with a goodbye</p>
+'Goodbye' # after the server sends close signal with a goodbye</code>
 
-<h1>server sends close and {% endhighlight %}</h1>
-</blockquote>
-</blockquote>
-</blockquote>
+<h5>server sends close and </h5>
+</code>
 
-<p>Socket programming is often a mess: huge number of options, many corner cases and many failure modes/reliability issues.</p>
+
+<code style="background-color: black; color: white;"> Socket programming is often a mess: huge number of options, many corner cases and many failure modes/reliability issues.</code>
 
 <p><strong>Partial Reads/Writes</strong>  happen where <em>recv()</em> length is a maximum limit, but it can be the case that less data than expected is received. In TCP, the data stream is continuous and thus no concept of records or fragments exists. A client sending 2 packets of data (in UDP terms) to a server through TCP, if interrupted at an arbitrary point before finishing, could be at any position within those two packets. 
 For most non-specialized applications, you can send all data using <em>sendall()</em> or in complete syntax <em>socket.sendall(data)</em>. You would not use this if networking is mixed in with other kinds of processing (ie. screen updates, multitasking, etc.)</p>
@@ -193,209 +189,164 @@ Instead of disabling timeouts, we can also set sockets to a non-blocking state u
 <p>As examples: <br>
 a) Blocking I/O  <br>
 Wait until a new connection is established
-{% highlight py %}</p>
+</p>
 
-<blockquote>
-  <blockquote>
-  <blockquote>
-  <p>from socket import *
-s = socket(AF<em>INET, SOCK</em>STREAM)
-s.bind(("",15000))
-s.listen(5)
-c,a = s.accept()        #function waits indefinitely until a new connection arrives--blocking I/O in action
-s.send("Hello?")        # typed in case of c, to show that pending messages can be received immediately
-{% endhighlight %}
-In this code, the accept() function waits indefinitely until a new connection arrives. This is blockin I/O in action.</p>
-</blockquote>
-</blockquote>
-</blockquote>
+<code style="background-color: black; color: white;"> 
+from socket import *<br>
+s = socket(AF<em>INET, SOCK</em>STREAM)<br>
+s.bind(("",15000))<br>
+s.listen(5)<br>
+c,a = s.accept()        #function waits indefinitely until a new connection arrives--blocking I/O in action<br>
+s.send("Hello?")        # typed in case of c, to show that pending messages can be received immediately <br>
+</code> 
+
+<p>In this code, the accept() function waits indefinitely until a new connection arrives. This is blockin I/O in action.</p>
+
 
 <p>b) Blocking I/O with a timeout <br>
 In this case the settimeout() method sets a time in seconds to wait before calling a non-established connection quits.
-{% highlight py %}</p>
+</p>
 
-<blockquote>
-  <blockquote>
-  <blockquote>
-  <p>from socket import *
-s = socket(AF<em>INET, SOCK</em>STREAM)    # client socket
-s.connect(("localhost",15000))     # connect to the server above
-c.settimeout(15)
-c.recv(8192)                #... wait 15 seconds. See what happens ...  </p>
-</blockquote>
-</blockquote>
-</blockquote>
+<code style="background-color: black; color: white;"> 
+  from socket import *<br>
+s = socket(AF<em>INET, SOCK</em>STREAM)    # client socket<br>
+s.connect(("localhost",15000))     # connect to the server above<br>
+c.settimeout(15) <br>
+c.recv(8192)                #... wait 15 seconds. See what happens ... <br>
 
-<p>{% endhighlight %}
+</code>
+<p>
 c) Non-blocking I/O   <br>
 In this case, operations immediately raise an exception if the operation can't be completely. To the code in part b, add:
-{% highlight py %}</p>
+</p>
+<code style="background-color: black; color: white;"> 
 
-<blockquote>
-  <blockquote>
-  <blockquote>
-  <p>c.setblocking(False)
-c.recv(8192)
-Traceback (most recent call last):
-  File "", line 1, in 
-socket.error: [Errno 35] Resource temporarily unavailable
-c.recv(8192)
-'Hello?'                # Pending string received and no error thrown. All because the data was ready to be received upon opening connection
-{% endhighlight %}</p>
-</blockquote>
-</blockquote>
-</blockquote>
+c.setblocking(False)<br>
+c.recv(8192)<br>
+Traceback (most recent call last):<br>
+  File "", line 1, in <br>
+socket.error: [Errno 35] Resource temporarily unavailable<br>
+c.recv(8192)<br>
+'Hello?'                # Pending string received and no error thrown. All because the data was ready to be received upon opening connection<br>
+
+</code>
 
 <h3> UDP + other supported socket types </h3>
 
 <p><b>UDP:</b> Datagrams are packets of data sent as discrete entities. They have no concept of a connection, reliability or ordering. Datagrams can be lost or arrive in random order. Although one important thing to take note is that the lack of security checks means that it is fast and lightweight, hence used in video games, skype, etc.</p>
 
 <p>A simple UDP Server can look like:
-{% highlight py %}</p>
+</p>
 
-<blockquote>
-  <blockquote>
-  <blockquote>
-  <p>from socket import *
-s = socket(AF<em>INET, SOCK</em>DGRAM)
-while True:
-...  data,addr = s.recvfrom(maxsize)        # Sent Data
-...  resp = "String to send"
-...  s.sendto(resp,addr)                # Important to not that data is sent and received in the same loop
-{% endhighlight %}</p>
-</blockquote>
-</blockquote>
-</blockquote>
+<code style="background-color: black; color: white;"> 
+  from socket import *<br>
+s = socket(AF<em>INET, SOCK</em>DGRAM)<br>
+while True:<br>
+...  data,addr = s.recvfrom(maxsize)        # Sent Data<br>
+...  resp = "String to send"<br>
+...  s.sendto(resp,addr)                # Important to not that data is sent and received in the same loop<br>
+</code>
+
 
 <p>Sending a datagram to a server:
-{% highlight py %}</p>
+</p>
+<code style="background-color: black; color: white;"> 
 
-<blockquote>
-  <blockquote>
-  <blockquote>
-  <p>from socket import *
-s = socket(AF<em>INET,SOCK</em>DGRAM)
-msg = "Hello World"
-s.sendto(msg,("server.com",10000))
-data, addr = s.recvfrom(maxsize)
-data, addr = s.recvfrom(maxsize)        # Optional to wait for a response where data is the destination variable and addr is address to receive from
-{% endhighlight %}</p>
-</blockquote>
-</blockquote>
-</blockquote>
+  from socket import * <br>
+s = socket(AF<em>INET,SOCK</em>DGRAM)<br>
+msg = "Hello World"<br>
+s.sendto(msg,("server.com",10000))<br>
+data, addr = s.recvfrom(maxsize)<br>
+data, addr = s.recvfrom(maxsize)        # Optional to wait for a response where data is the destination variable and addr is address to receive from <br>
+
+</code>
 
 <p>Essentially the difference between UDP and TCP is that TCP's continuous data stream exchanges files and data sequentially in the order it is requested and sent where as UDP has no concept of this and begins to perform a send or receive operation as soon as it is executed.</p>
 
 <p><em>Unix domain sockets</em> are sometimes used for fast inter-process-communication or pipes between processes</p>
 
-<p>{% highlight py %}</p>
-
-<blockquote>
-  <blockquote>
-  <blockquote>
-  <p>s = socket(AF<em>UNIX, SOCK</em>STREAM | SOCK_DGRAM)   # creation of socket
-s.bind("/tmp/foo")      # Server binding
-c.connect("/tmp/foo")       # Client connection 
-                # Rest of the programming interface the same
-{% endhighlight %}</p>
-</blockquote>
-</blockquote>
-</blockquote>
-
+<code style="background-color: black; color: white;"> 
+  s = socket(AF<em>UNIX, SOCK</em>STREAM | SOCK_DGRAM)   # creation of socket<br>
+s.bind("/tmp/foo")      # Server binding<br>
+c.connect("/tmp/foo")       # Client connection <br>
+                # Rest of the programming interface the same<br>
+</code>
+<br>  
 <p><strong>Sockets and Concurrency</strong>
 For a server handing multiple clients, each client gets its own socket on server. To manage multiple clients:
 Server must always be ready to accept new connections
 and allow each client to operate independently. There are many options here, the three we'll discuss are <br></p>
 
-<p>1) Threaded Server: Each client handled by a unique thread
-{% highlight py %}</p>
+<p>1) Threaded Server: Each client handled by a unique thread</p>
+<code style="background-color: black; color: white;"> 
 
-<blockquote>
-  <blockquote>
-  <blockquote>
-  <p>import threading
-from socket import *</p>
+  import threading
+from socket import *<br>
 
-<p>def handle_client(c):   # defined function to be called by each new thread later
-  # handle each client here
-  c.close()
-  return</p>
+def handle_client(c):   # defined function to be called by each new thread later<br>
+  # handle each client here<br>
+  c.close()<br>
+  return<br>
 
-<p>s = socket(AF<em>INET,SOCK</em>STREAM)
-s.bind(("",9000))
-s.listen(5)
-while True: # typical create and bind socket and run in a loop
-c,a = s.accept()
-t = threading.Thread(target=handle_client, args=(c,))   # call function defined above, using as a parameter
-{% endhighlight %}</p>
-</blockquote>
-</blockquote>
-</blockquote>
+s = socket(AF<em>INET,SOCK</em>STREAM)<br>
+s.bind(("",9000))<br>
+s.listen(5)<br>
+while True: # typical create and bind socket and run in a loop<br>
+c,a = s.accept()<br>
+t = threading.Thread(target=handle_client, args=(c,))   # call function defined above, using as a parameter<br>
+</code>
 
-<p>2) Forking Server (UNIX): Each client handled by a subprocess
-{% highlight py %}</p>
 
-<blockquote>
-  <blockquote>
-  <blockquote>
-  <p>import os
-from socket import *</p>
+<p>2) Forking Server (UNIX): Each client handled by a subprocess</p>
 
-<p>s = socket(AF<em>INET,SOCK</em>STREAM)
-s.bind(("",9000))
-s.listen(5)
-while True: 
-  c,a = s.accept()</p>
+<code style="background-color: black; color: white;"> 
 
-<p>if os.fork() == 0:
-      # Child process. Manage client here
-      c.close()
-      os._exit(0)
-  else:
-      # Parent process. Clean up and go back to wait for more connections
-c.close()
-{% endhighlight %}</p>
-</blockquote>
-</blockquote>
-</blockquote>
+  import os
+from socket import *<br>
+
+s = socket(AF<em>INET,SOCK</em>STREAM)<br>
+s.bind(("",9000))<br>
+s.listen(5)<br>
+while True: <br>
+  c,a = s.accept()<br>
+
+if os.fork() == 0:<br>
+      # Child process. Manage client here<br>
+      c.close()<br>
+      os._exit(0)<br>
+  else:<br>
+      # Parent process. Clean up and go back to wait for more connections<br>
+c.close()<br>
+</code>
+
 
 <p>3) Asynchronous Server: Server handles all clients in an event loop</p>
 
-<p>{% highlight py %}</p>
+<code style="background-color: black; color: white;"> 
 
-<blockquote>
-  <blockquote>
-  <blockquote>
-  <p>import select
-from socket import *</p>
+  import select
+from socket import *<br>
 
-<p>s = socket(AF<em>INET,SOCK</em>STREAM)
-clients = [] # List of all active client sockets
-while True:
-  # Look for activity on the sockets
-  input,output,err = select.select(s+clients, clients, clients)
-  # process all sockets ready for output
-  for o in output: # do something for each</p>
+s = socket(AF<em>INET,SOCK</em>STREAM)<br>
+clients = [] # List of all active client sockets<br>
+while True:<br>
+  # Look for activity on the sockets<br>
+  input,output,err = select.select(s+clients, clients, clients)<br>
+  # process all sockets ready for output<br>
+  for o in output: # do something for each<br>
 
-<p>{% endhighlight %}</p>
-</blockquote>
-</blockquote>
-</blockquote>
+</code>
+
 
 <p>A few <strong>Utility Functions</strong>:</p>
 
-<p>{% highlight py %}</p>
+<code style="background-color: black; color: white;"> 
 
-<blockquote>
-  <blockquote>
-  <blockquote>
-  <p>socket.gethostname() # As stated -- returns a hostname like 'foo.bar.com'
-socket.gethostbyname("www.python.org") # Returns ip address of the remote machine
-socket.gethostbyaddr("82.93.246.218")  # Fetches information on remote ip like its hostname and other available data.
-{% endhighlight %}</p>
-</blockquote>
-</blockquote>
-</blockquote>
+  socket.gethostname() # As stated -- returns a hostname like 'foo.bar.com'<br>
+socket.gethostbyname("www.python.org") # Returns ip address of the remote machine<br>
+socket.gethostbyaddr("82.93.246.218")  # Fetches information on remote ip like its hostname and other available data.<br>
+</code>
+
 
 <h2>II. Client Programming</h2>
 
