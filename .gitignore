@@ -27,3 +27,4 @@ site/_site/
 coverage
 .ruby-version
 *.codekit
+_site
